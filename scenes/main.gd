@@ -29,6 +29,7 @@ func new_game():
 	# scroll is the position of the ground
 	scroll = 0
 	score = 0
+	$UI/ScoreLabel.text = "SCORE: " + str(score)
   # remove all pipes
 	pipes.clear()
   # generate the first set of pipes
@@ -78,8 +79,13 @@ func generate_pipes():
   # each pipe set is a random height between -PIPE_RANGE and PIPE_RANGE
 	pipe.position.y = (screen_size.y - ground_height) / 2 + randi_range(-PIPE_RANGE, PIPE_RANGE)
 	pipe.hit.connect(bird_hit)
+	pipe.scored.connect(scored)
 	add_child(pipe)
 	pipes.append(pipe)
+
+func scored():
+	score += 1
+	$UI/ScoreLabel.text = "SCORE: " + str(score)
 
 func check_top():
 	if $Bird.position.y < 0:
