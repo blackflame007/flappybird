@@ -98,6 +98,6 @@ func bird_hit():
 
 
 func _on_ground_hit():
-	# prebent the bird from falling through the ground
+	# prevent the bird from falling through the ground
 	$Bird.falling = false
 	stop_game()
