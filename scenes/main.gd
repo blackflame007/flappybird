@@ -2,6 +2,8 @@ extends Node
 
 # Flappy Bird Clone Game in GODOT
 
+@export var pipe_scene: PackedScene
+
 # Flags to determine if the game is running or over
 var game_running: bool
 var game_over: bool
@@ -17,14 +19,20 @@ const PIPE_RANGE: int = 200
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_window().size
+	ground_height = $Ground.get_node("Sprite2D").texture.get_height()
 	new_game()
 
 func new_game():
 	# Reset the game state
 	game_running = false
 	game_over = false
+	# scroll is the position of the ground
 	scroll = 0
 	score = 0
+  # remove all pipes
+	pipes.clear()
+  # generate the first set of pipes
+	generate_pipes()
 	$Bird.reset()
 	
 func _input(event):
@@ -40,6 +48,8 @@ func _input(event):
 func start_game():
 	game_running = true
 	$Bird.flap()
+	# start pipe timer
+	$PipeTimer.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,3 +61,25 @@ func _process(delta):
 			scroll = 0
 		# move the ground
 		$Ground.scroll(scroll)
+		# move pipes
+		for pipe in pipes:
+			pipe.position.x -= SCROLL_SPEED
+
+
+func _on_pipe_timer_timeout():
+	generate_pipes()
+
+
+func generate_pipes():
+	var pipe = pipe_scene.instantiate()
+  # pipe slides from right to left
+	pipe.position.x = screen_size.x + PIPE_DELAY
+  # each pipe set is a random height between -PIPE_RANGE and PIPE_RANGE
+	pipe.position.y = (screen_size.y - ground_height) / 2 + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	pipe.hit.connect(bird_hit)
+	add_child(pipe)
+	pipes.append(pipe)
+
+
+func bird_hit():
+	pass
