@@ -11,3 +11,7 @@ This is a FlappyBird clone made with Godot 4.\*
 
 - Clone this repository
 - Open the project with Godot 4.\*
+
+## Demo
+
+![Demo](docs/assets/flappyBirdDEMO.gif)
