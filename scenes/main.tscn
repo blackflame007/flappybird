@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_4h8r3"]
 [ext_resource type="Texture2D" uid="uid://cysj2yqw28gqn" path="res://assets/bg.png" id="1_dquad"]
-[ext_resource type="PackedScene" uid="uid://bjs3qppr7ytww" path="res://scenes/pipe.tscn" id="2_cng0a"]
-[ext_resource type="PackedScene" uid="uid://jkmhlmsh7vmc" path="res://scenes/bird.tscn" id="3_d6ral"]
-[ext_resource type="PackedScene" uid="uid://c2ijgxpt018r5" path="res://scenes/ground.tscn" id="4_y7ok0"]
-[ext_resource type="PackedScene" uid="uid://c1xo624j2jtfi" path="res://scenes/ui.tscn" id="6_k4cac"]
-[ext_resource type="PackedScene" uid="uid://b4w84vvjbvout" path="res://scenes/game_over.tscn" id="7_lnedy"]
+[ext_resource type="PackedScene" uid="uid://bjs3qppr7ytww" path="res://scenes/objects/pipe.tscn" id="2_cng0a"]
+[ext_resource type="PackedScene" uid="uid://jkmhlmsh7vmc" path="res://scenes/player/bird.tscn" id="3_d6ral"]
+[ext_resource type="PackedScene" uid="uid://c2ijgxpt018r5" path="res://scenes/objects/ground.tscn" id="4_y7ok0"]
+[ext_resource type="PackedScene" uid="uid://c1xo624j2jtfi" path="res://scenes/ui/ui.tscn" id="6_k4cac"]
+[ext_resource type="PackedScene" uid="uid://b4w84vvjbvout" path="res://scenes/objects/game_over.tscn" id="7_lnedy"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_4h8r3")

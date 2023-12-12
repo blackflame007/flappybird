@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://jkmhlmsh7vmc"]
 
 [ext_resource type="Texture2D" uid="uid://b41wbhadjsiea" path="res://assets/bird1.png" id="1_0nyxt"]
-[ext_resource type="Script" path="res://scenes/bird.gd" id="1_ffvj6"]
+[ext_resource type="Script" path="res://scenes/player/bird.gd" id="1_ffvj6"]
 [ext_resource type="Texture2D" uid="uid://badkor4ybl807" path="res://assets/bird2.png" id="2_yl1um"]
 [ext_resource type="Texture2D" uid="uid://cpb0ox5j06ff7" path="res://assets/bird3.png" id="3_ddj2k"]
 

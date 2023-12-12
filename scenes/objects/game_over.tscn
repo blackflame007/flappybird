@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4w84vvjbvout"]
+[gd_scene load_steps=7 format=3 uid="uid://b4w84vvjbvout"]
 
-[ext_resource type="Script" path="res://GameOver.gd" id="1_muetd"]
+[ext_resource type="Script" path="res://scenes/objects/GameOver.gd" id="1_muetd"]
 [ext_resource type="Texture2D" uid="uid://s3glnft52p4w" path="res://assets/restart.png" id="2_djugd"]
+[ext_resource type="Theme" uid="uid://dpld50xnwr8sg" path="res://themes/main.tres" id="3_c185k"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_44pva"]
 texture = ExtResource("2_djugd")
@@ -18,10 +19,19 @@ script = ExtResource("1_muetd")
 [node name="RestartButton" type="Button" parent="."]
 offset_left = 334.0
 offset_top = 334.0
-offset_right = 494.0
-offset_bottom = 397.0
+offset_right = 518.0
+offset_bottom = 402.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_44pva")
 theme_override_styles/hover = SubResource("StyleBoxTexture_t5fof")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_bwx4d")
 
+[node name="MainMenu" type="Button" parent="."]
+offset_left = 334.0
+offset_top = 458.0
+offset_right = 518.0
+offset_bottom = 513.0
+theme = ExtResource("3_c185k")
+text = "Main Menu"
+
 [connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="MainMenu" to="." method="_on_main_menu_pressed"]

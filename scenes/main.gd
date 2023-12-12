@@ -16,6 +16,8 @@ var pipes: Array
 const PIPE_DELAY: int = 100
 const PIPE_RANGE: int = 200
 
+@onready var score_label = $UI/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ScoreLabel
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_window().size
@@ -29,7 +31,7 @@ func new_game():
 	# scroll is the position of the ground
 	scroll = 0
 	score = 0
-	$UI/ScoreLabel.text = "SCORE: " + str(score)
+	score_label.text = "SCORE: " + str(score)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
   # remove all pipes
@@ -90,7 +92,7 @@ func generate_pipes():
 
 func scored():
 	score += 1
-	$UI/ScoreLabel.text = "SCORE: " + str(score)
+	score_label.text = "SCORE: " + str(score)
 
 func check_top():
 	if $Bird.position.y < 0:
