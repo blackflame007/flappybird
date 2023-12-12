@@ -16,7 +16,7 @@ var ground_height: int
 var pipes: Array
 const PIPE_DELAY: int = 100
 const PIPE_RANGE: int = 200
-const SAVEFILE = "user://save.json"
+const SAVEFILE = "user://flappybird.json"
 
 @onready var score_label = $UI/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ScoreLabel
 @onready var high_score_label = $UI/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HighScoreLabel
@@ -114,7 +114,10 @@ func stop_game():
 	game_running = false
 	game_over = true
 	$GameOver.show()
-	save_game()
+	# check if high score is beaten
+	if score >= highScore:
+		# save the score
+		save_game()
 
 func bird_hit():
 	$Bird.falling = true
@@ -142,7 +145,7 @@ func save():
 # Go through everything in the persist category and ask them to return a
 # dict of relevant variables.
 func save_game():
-	var save_game = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	var save_game = FileAccess.open(SAVEFILE, FileAccess.WRITE)
 
 	var node_data = save()
 
@@ -156,20 +159,12 @@ func save_game():
 # Note: This can be called from anywhere inside the tree. This function
 # is path independent.
 func load_game():
-	if not FileAccess.file_exists("user://savegame.save"):
+	if not FileAccess.file_exists(SAVEFILE):
 		return # Error! We don't have a save to load.
-
-	# We need to revert the game state so we're not cloning objects
-	# during loading. This will vary wildly depending on the needs of a
-	# project, so take care with this step.
-	# For our example, we will accomplish this by deleting saveable objects.
-	var save_nodes = get_tree().get_nodes_in_group("Persist")
-	for i in save_nodes:
-		i.queue_free()
 
 	# Load the file line by line and process that dictionary to restore
 	# the object it represents.
-	var save_game = FileAccess.open("user://savegame.save", FileAccess.READ)
+	var save_game = FileAccess.open(SAVEFILE, FileAccess.READ)
 	while save_game.get_position() < save_game.get_length():
 		var json_string = save_game.get_line()
 
