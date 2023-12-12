@@ -9,14 +9,17 @@ var game_running: bool
 var game_over: bool
 var scroll
 var score
+var highScore
 const SCROLL_SPEED: int = 4
 var screen_size: Vector2i
 var ground_height: int
 var pipes: Array
 const PIPE_DELAY: int = 100
 const PIPE_RANGE: int = 200
+const SAVEFILE = "user://save.json"
 
 @onready var score_label = $UI/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ScoreLabel
+@onready var high_score_label = $UI/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,7 +34,10 @@ func new_game():
 	# scroll is the position of the ground
 	scroll = 0
 	score = 0
+	highScore = 0
+	load_game()
 	score_label.text = "SCORE: " + str(score)
+	high_score_label.text = "HIGH SCORE: " + str(highScore)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
   # remove all pipes
@@ -93,6 +99,9 @@ func generate_pipes():
 func scored():
 	score += 1
 	score_label.text = "SCORE: " + str(score)
+	if score > highScore:
+		highScore = score
+		high_score_label.text = "HIGH SCORE: " + str(highScore)
 
 func check_top():
 	if $Bird.position.y < 0:
@@ -105,6 +114,7 @@ func stop_game():
 	game_running = false
 	game_over = true
 	$GameOver.show()
+	save_game()
 
 func bird_hit():
 	$Bird.falling = true
@@ -119,3 +129,60 @@ func _on_ground_hit():
 
 func _on_game_over_restart():
 	new_game()
+
+
+func save():
+	var save_dict = {
+		"high_score": score
+	}
+	return save_dict
+
+# Note: This can be called from anywhere inside the tree. This function is
+# path independent.
+# Go through everything in the persist category and ask them to return a
+# dict of relevant variables.
+func save_game():
+	var save_game = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+
+	var node_data = save()
+
+	# JSON provides a static method to serialized JSON string.
+	var json_string = JSON.stringify(node_data)
+
+	# Store the save dictionary as a new line in the save file.
+	save_game.store_line(json_string)
+
+
+# Note: This can be called from anywhere inside the tree. This function
+# is path independent.
+func load_game():
+	if not FileAccess.file_exists("user://savegame.save"):
+		return # Error! We don't have a save to load.
+
+	# We need to revert the game state so we're not cloning objects
+	# during loading. This will vary wildly depending on the needs of a
+	# project, so take care with this step.
+	# For our example, we will accomplish this by deleting saveable objects.
+	var save_nodes = get_tree().get_nodes_in_group("Persist")
+	for i in save_nodes:
+		i.queue_free()
+
+	# Load the file line by line and process that dictionary to restore
+	# the object it represents.
+	var save_game = FileAccess.open("user://savegame.save", FileAccess.READ)
+	while save_game.get_position() < save_game.get_length():
+		var json_string = save_game.get_line()
+
+		# Creates the helper class to interact with JSON
+		var json = JSON.new()
+
+		# Check if there is any error while parsing the JSON string, skip in case of failure
+		var parse_result = json.parse(json_string)
+		if not parse_result == OK:
+			print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+			continue
+
+		# Get the data from the JSON object
+		var node_data = json.get_data()
+
+		highScore = node_data["high_score"]
