@@ -1,37 +1,35 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4w84vvjbvout"]
+[gd_scene load_steps=3 format=3 uid="uid://b4w84vvjbvout"]
 
 [ext_resource type="Script" path="res://scenes/objects/GameOver.gd" id="1_muetd"]
-[ext_resource type="Texture2D" uid="uid://s3glnft52p4w" path="res://assets/restart.png" id="2_djugd"]
 [ext_resource type="Theme" uid="uid://dpld50xnwr8sg" path="res://themes/main.tres" id="3_c185k"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_44pva"]
-texture = ExtResource("2_djugd")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t5fof"]
-texture = ExtResource("2_djugd")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bwx4d"]
-texture = ExtResource("2_djugd")
 
 [node name="GameOver" type="CanvasLayer"]
 script = ExtResource("1_muetd")
 
-[node name="RestartButton" type="Button" parent="."]
-offset_left = 334.0
-offset_top = 334.0
-offset_right = 518.0
-offset_bottom = 402.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_44pva")
-theme_override_styles/hover = SubResource("StyleBoxTexture_t5fof")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_bwx4d")
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="MainMenu" type="Button" parent="."]
-offset_left = 334.0
-offset_top = 458.0
-offset_right = 518.0
-offset_bottom = 513.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MainMenu" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
 theme = ExtResource("3_c185k")
 text = "Main Menu"
 
-[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="MainMenu" to="." method="_on_main_menu_pressed"]
+[node name="RestartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_c185k")
+text = "Restart"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
